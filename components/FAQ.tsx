@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     question: 'Are the pools private?',
-    answer: 'Yes. Each villa has its own dedicated infinity pool and hot tub. No shared facilities — your pool is yours alone for the duration of your stay.',
+    answer: 'Yes. Each villa has its own dedicated infinity pool and hot tub. No shared facilities. Your pool is yours alone for the duration of your stay.',
   },
   {
     question: 'What is the cancellation policy?',
@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     question: 'What is the check-in and check-out time?',
-    answer: 'Check-in is from 15:00 and check-out is by 11:00. Early check-in or late check-out can often be accommodated subject to availability — just ask.',
+    answer: 'Check-in is from 15:00 and check-out is by 11:00. Early check-in or late check-out can often be accommodated subject to availability, just ask.',
   },
   {
     question: 'Is daily cleaning included?',

@@ -37,7 +37,7 @@ export default function ContactPage() {
             Get in <em>Touch</em>
           </h1>
           <p style={{ color: 'var(--muted)', fontFamily: 'var(--font-sans)', fontSize: '1rem', marginBottom: '48px', maxWidth: '480px' }}>
-            Enquire about availability, rates, or anything else — we'll get back to you within 24 hours.
+            Enquire about availability, rates, or anything else. We'll get back to you within 24 hours.
           </p>
 
           {/* TODO: Replace with a server action (see myqo-contact-form skill).
@@ -101,7 +101,7 @@ export default function ContactPage() {
             </div>
             <div>
               <p style={detailLabelStyle}>Nearby</p>
-              <p style={detailTextStyle}>Vasiliki Beach — 1 km<br />Vasiliki Port — 4.2 km<br />Aktion Airport — 56 km</p>
+              <p style={detailTextStyle}>Vasiliki Beach, 1 km<br />Vasiliki Port, 4.2 km<br />Aktion Airport, 56 km</p>
             </div>
             <div>
               <p style={detailLabelStyle}>Rating</p>

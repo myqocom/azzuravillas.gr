@@ -17,7 +17,7 @@ export function LocationSection() {
         <div className="location__map reveal reveal-d1">
           <iframe
             src="https://maps.google.com/maps?q=Vasiliki,+Lefkada,+Greece&t=&z=14&ie=UTF8&iwloc=&output=embed"
-            title="Azzura Villas location — Vasiliki, Lefkada, Greece"
+            title="Azzura Villas location, Vasiliki, Lefkada, Greece"
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"

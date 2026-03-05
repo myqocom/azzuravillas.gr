@@ -20,7 +20,7 @@ const villaAmenities = [
   },
   {
     title: 'Washer, Dryer & Free Parking',
-    description: 'Practical comforts included — laundry facilities and free private parking on the property.',
+    description: 'Practical comforts included: laundry facilities and free private parking on the property.',
   },
 ]
 
@@ -39,7 +39,7 @@ const surroundingAmenities = [
   },
   {
     title: 'Boat Trips to Hidden Beaches',
-    description: 'Day trips to Porto Katsiki, Agiofili, and the island of Meganisi — arranged on request.',
+    description: 'Day trips to Porto Katsiki, Agiofili, and the island of Meganisi, arranged on request.',
   },
   {
     title: 'Cycling & Airport Transfers',
