@@ -6,8 +6,8 @@ export function CTA() {
   return (
     <section className="cta-section">
       <Image
-        src="/images/azzura-villas-dsc-9962.webp"
-        alt="Infinity pool edge overlooking the Ionian Sea at Azzura Villas"
+        src="/night.webp"
+        alt="Hot tub at night with starry sky and Vasiliki Bay views at Azzura Villas"
         fill
         sizes="100vw"
         className="cta-section__bg"
