@@ -2,46 +2,16 @@ import BlurRevealText from '@/components/BlurRevealText'
 
 const reviews = [
   {
-    text: 'Fresh, new villa with an amazing view. Extraordinary scenery, beautiful interiors, and very kind, helpful owners. Fully equipped for everything you need.',
+    text: 'Fresh, new villa with an amazing view. Extraordinary view, new and beautiful villa, close to Vasiliki. Very kind and helpful owner and staff. Fully equipped.',
     name: 'Alievski',
     country: 'Sweden',
     source: 'booking',
   },
   {
-    text: 'Fabulous. Breathtaking view. Fantastic property. Luxury, clean, modern, well equipped. Lovely people who went out of their way to help.',
+    text: 'Fabulous. Breathtaking view. Fantastic property. Luxury, clean, modern, well equipped. Lovely people, very helpful. Electric BBQ on request.',
     name: 'Chloe',
     country: 'United Kingdom',
     source: 'booking',
-  },
-  {
-    text: 'We come to Lefkada every summer. This was different. Brand new, spotless, and that infinity pool view is something you just stare at for hours.',
-    name: 'Sarah M.',
-    country: 'Germany',
-    source: 'google',
-  },
-  {
-    text: 'Booked both villas for a family trip. 16 of us, three generations, and everyone had their own space. The terraces are perfect for evening drinks.',
-    name: 'Konstantinos P.',
-    country: 'Greece',
-    source: 'google',
-  },
-  {
-    text: 'Woke up every morning to the sea below, coffee on the balcony. The photos do not do it justice. Already rebooked for next year.',
-    name: 'Julia B.',
-    country: 'Austria',
-    source: 'google',
-  },
-  {
-    text: 'Best villa we have stayed in across all the Greek islands. Kitchen fully stocked, beds incredibly comfortable, hot tub at sunset is pure magic.',
-    name: 'Emma R.',
-    country: 'United Kingdom',
-    source: 'booking',
-  },
-  {
-    text: 'Quiet, private, and beautifully designed. Not a detail missed. The hosts recommended the best local tavernas in Vasiliki.',
-    name: 'Marco D.',
-    country: 'Italy',
-    source: 'google',
   },
 ]
 
