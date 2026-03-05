@@ -1474,7 +1474,7 @@ img { display: block; }
   .amen { padding: 80px 24px; }
   .amen__grid { grid-template-columns: 1fr; gap: 40px; }
   .amen__photo { aspect-ratio: 3/2; order: -1; }
-  .amen__photo--right { order: 0; }
+  .amen__photo--right { order: -1; }
   .amen__content { padding: 0; }
 
   .faq { padding: 80px 24px; }
