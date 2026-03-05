@@ -517,7 +517,7 @@ img { display: block; }
 }
 
 .setting__text {
-  padding: 80px;
+  padding: 80px 40px;
   max-width: 560px;
 }
 
@@ -558,12 +558,13 @@ img { display: block; }
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  gap: 0;
   align-items: center;
 }
 
 .experience__text {
   max-width: 480px;
+  padding: 0 40px;
 }
 
 .experience__heading {
@@ -734,7 +735,7 @@ img { display: block; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 80px;
+  padding: 0 40px;
 }
 
 .amen__heading {
@@ -979,7 +980,7 @@ img { display: block; }
 }
 
 .testimonials__row--left {
-  animation: scrollLeft 50s linear infinite;
+  animation: scrollLeft 38s linear infinite;
 }
 
 .testimonial-card {
@@ -1472,6 +1473,7 @@ img { display: block; }
   .amen__grid { grid-template-columns: 1fr; gap: 40px; }
   .amen__photo { aspect-ratio: 3/2; order: -1; }
   .amen__photo--right { order: 0; }
+  .amen__content { padding: 0; }
 
   .faq { padding: 80px 24px; }
   .faq__header { margin-bottom: 48px; }
