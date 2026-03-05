@@ -5,36 +5,36 @@ import BlurRevealText from '@/components/BlurRevealText'
 
 const faqs = [
   {
-    question: 'How many guests can each villa accommodate?',
-    answer: 'Each villa sleeps up to 8 guests across 3 bedrooms. The villas can be rented individually or together for groups of up to 16.',
+    question: 'Does Azzura Villas have a pool?',
+    answer: 'Yes. Each villa has its own private infinity pool and hot tub. You can find out more about the facilities on this page.',
   },
   {
-    question: 'Is there a minimum stay requirement?',
-    answer: 'We require a minimum of 5 nights during peak season (July and August) and 3 nights during the shoulder months. Contact us for short-break availability in spring or autumn.',
+    question: 'What are the check-in and check-out times?',
+    answer: 'Check-in is from 16:00. Check-out is until 11:00.',
   },
   {
-    question: 'Are the pools private?',
-    answer: 'Yes. Each villa has its own dedicated infinity pool and hot tub. No shared facilities. Your pool is yours alone for the duration of your stay.',
+    question: 'How much does it cost to stay at Azzura Villas?',
+    answer: 'Prices vary depending on your dates and the option you select. Enter your dates to see current availability and pricing.',
   },
   {
-    question: 'What is the cancellation policy?',
-    answer: 'Cancellations made 60 or more days before arrival receive a full refund. Between 30 and 60 days, 50% of the booking amount is retained. Within 30 days of arrival, the full amount is non-refundable. We strongly recommend travel insurance.',
+    question: 'What activities are available?',
+    answer: 'Azzura Villas offers the following activities and services (charges may apply): hot tub, cycling, snorkelling, diving, canoeing, windsurfing, water park access, bicycle rental, and swimming pool.',
   },
   {
-    question: 'Is airport transfer included?',
-    answer: 'Airport transfers from Aktion National Airport (PVK) can be arranged on request for an additional fee. The drive takes approximately 55 minutes. We can also arrange private boat transfers from Lefkada port.',
+    question: 'How far is Azzura Villas from the centre of Vasiliki?',
+    answer: 'Azzura Villas is 1.6 km from the centre of Vasiliki.',
   },
   {
-    question: 'Are pets allowed?',
-    answer: 'Small, well-behaved pets are welcome with prior notice. Please let us know at the time of booking so we can prepare accordingly.',
+    question: 'How close to the beach is Azzura Villas?',
+    answer: 'The nearest beach is just 300 m from Azzura Villas.',
   },
   {
-    question: 'What is the check-in and check-out time?',
-    answer: 'Check-in is from 15:00 and check-out is by 11:00. Early check-in or late check-out can often be accommodated subject to availability, just ask.',
+    question: 'How many guests can Azzura Villas accommodate?',
+    answer: 'Each villa accommodates up to 8 guests across 3 bedrooms.',
   },
   {
-    question: 'Is daily cleaning included?',
-    answer: 'A mid-stay clean is included for stays of 7 nights or more. Additional cleaning services and fresh linen changes can be arranged at any time for an extra charge.',
+    question: 'Does Azzura Villas have a balcony or terrace?',
+    answer: 'Yes. Options at this property include both a balcony and a terrace. You can find out more about the facilities on this page.',
   },
 ]
 
