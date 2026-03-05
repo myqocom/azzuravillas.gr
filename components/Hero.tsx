@@ -24,12 +24,6 @@ export function Hero() {
           className="hero__title"
           baseDelay={0.2}
         />
-        <Link href="/book" className="hero__cta">
-          Book Your Villa
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </Link>
       </div>
 
       <div className="hero__scroll-hint">
