@@ -920,6 +920,7 @@ img { display: block; }
   display: flex;
   justify-content: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .testimonials__rating-badge {
