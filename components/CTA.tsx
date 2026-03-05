@@ -6,7 +6,7 @@ export function CTA() {
   return (
     <section className="cta-section">
       <Image
-        src="/night.webp"
+        src="/night2.webp"
         alt="Hot tub at night with starry sky and Vasiliki Bay views at Azzura Villas"
         fill
         sizes="100vw"
