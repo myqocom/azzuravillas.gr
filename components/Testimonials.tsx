@@ -98,14 +98,21 @@ function Card({ review }: { review: typeof reviews[0] }) {
   )
 }
 
+// Card width (320px) + margin-right (20px) = 340px per card.
+// Speed: 50px/s. Min duration: 60s to keep the seam invisible.
+const CARD_SLOT = 340
+const PX_PER_SEC = 50
+
 function MarqueeRow({ row, direction }: { row: typeof reviews; direction: 'left' | 'right' }) {
   const cls = direction === 'left'
     ? 'testimonials__marquee testimonials__marquee--left'
     : 'testimonials__marquee testimonials__marquee--right'
 
+  const duration = Math.max(60, (row.length * CARD_SLOT) / PX_PER_SEC)
+
   return (
     <div className="testimonials__row">
-      <div className={cls}>
+      <div className={cls} style={{ '--scroll-duration': `${duration}s` } as React.CSSProperties}>
         {[...row, ...row].map((r, i) => <Card key={`${direction}-${i}`} review={r} />)}
       </div>
     </div>

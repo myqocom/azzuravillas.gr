@@ -991,11 +991,11 @@ img { display: block; }
 }
 
 .testimonials__marquee--left {
-  animation: marquee-left 40s linear infinite;
+  animation: marquee-left var(--scroll-duration, 60s) linear infinite;
 }
 
 .testimonials__marquee--right {
-  animation: marquee-right 40s linear infinite;
+  animation: marquee-right var(--scroll-duration, 60s) linear infinite;
 }
 
 @keyframes marquee-left {
