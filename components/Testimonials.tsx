@@ -98,7 +98,24 @@ function Card({ review }: { review: typeof reviews[0] }) {
   )
 }
 
+function MarqueeRow({ row, direction }: { row: typeof reviews; direction: 'left' | 'right' }) {
+  const cls = direction === 'left'
+    ? 'testimonials__marquee testimonials__marquee--left'
+    : 'testimonials__marquee testimonials__marquee--right'
+
+  return (
+    <div className="testimonials__row">
+      <div className={cls}>
+        {[...row, ...row].map((r, i) => <Card key={`${direction}-${i}`} review={r} />)}
+      </div>
+    </div>
+  )
+}
+
 export function Testimonials() {
+  const rowLeft  = reviews.filter((_, i) => i % 2 === 0)
+  const rowRight = reviews.filter((_, i) => i % 2 === 1)
+
   return (
     <section className="testimonials" id="testimonials">
       <div className="testimonials__header reveal">
@@ -121,13 +138,8 @@ export function Testimonials() {
       <div className="testimonials__tracks">
         <div className="testimonials__fade testimonials__fade--left" />
         <div className="testimonials__fade testimonials__fade--right" />
-
-        <div className="testimonials__row testimonials__row--left">
-          {(() => { const row = reviews.filter((_, i) => i % 2 === 0); return [...row, ...row].map((r, i) => <Card key={`a-${i}`} review={r} />); })()}
-        </div>
-        <div className="testimonials__row testimonials__row--right">
-          {(() => { const row = reviews.filter((_, i) => i % 2 === 1); return [...row, ...row].map((r, i) => <Card key={`b-${i}`} review={r} />); })()}
-        </div>
+        <MarqueeRow row={rowLeft}  direction="left" />
+        <MarqueeRow row={rowRight} direction="right" />
       </div>
     </section>
   )
