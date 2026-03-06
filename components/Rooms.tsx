@@ -26,8 +26,8 @@ const rooms = [
 
 export function Rooms() {
   return (
-    <section className="rooms" id="rooms">
-      <div className="rooms__inner">
+    <section className="rooms">
+      <div className="rooms__inner" id="rooms">
         <div className="rooms__header">
           <div className="reveal">
             <p className="section-label">2 Villas · 3 Bedrooms Each · Sleeps 8 per Villa</p>
@@ -42,7 +42,7 @@ export function Rooms() {
 
         <div className="rooms__image-wrap reveal">
           <Image
-            src="/images/azzura-villas-dsc-0023.webp"
+            src="/media/web/photography/bedroom-sea-view.webp"
             alt="Azzura Villas bedroom with Ionian Sea view in Lefkada"
             fill
             sizes="(max-width: 809px) 100vw, 100vw"

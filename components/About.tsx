@@ -3,7 +3,7 @@ import BlurRevealText from '@/components/BlurRevealText'
 
 export function About() {
   return (
-    <section id="about">
+    <section>
       {/* Welcome intro */}
       <div className="welcome-intro">
         <div className="welcome-intro__inner reveal">
@@ -17,10 +17,10 @@ export function About() {
       </div>
 
       {/* The Setting */}
-      <div className="setting">
+      <div id="about" className="setting">
         <div className="setting__image reveal">
           <Image
-            src="/images/azzura-villas-dsc-0039.webp"
+            src="/media/web/photography/mountain-sea-view.webp"
             alt="Panoramic view of Vasiliki Bay from Azzura Villas balcony in Lefkada"
             fill
             sizes="(max-width: 809px) 100vw, 50vw"

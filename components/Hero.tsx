@@ -6,7 +6,7 @@ export function Hero() {
   return (
     <section className="hero">
       <Image
-        src="/images/azzura-villas-dsc-0130.webp"
+        src="/media/web/photography/panoramic-bay.webp"
         alt="Azzura Villas Lefkada, infinity pool overlooking the Ionian Sea"
         fill
         priority

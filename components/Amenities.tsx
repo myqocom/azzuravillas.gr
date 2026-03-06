@@ -43,12 +43,12 @@ export function Amenities() {
   return (
     <>
       {/* ── Inside Each Villa ── */}
-      <section className="amen" id="amenities">
-        <div className="amen__grid">
+      <section className="amen">
+        <div className="amen__grid" id="amenities">
           <div className="amen__photo reveal">
             <Image
-              src="/images/azzura-villas-dsc-0009.webp"
-              alt="Private infinity pool and hot tub with Vasiliki Bay views at Azzura Villas"
+              src="/media/web/photography/villa-interior-dining.webp"
+              alt="Interior of Azzura Villas private villa in Lefkada"
               fill
               sizes="50vw"
               style={{ objectFit: 'cover' }}
@@ -99,8 +99,8 @@ export function Amenities() {
           </div>
           <div className="amen__photo amen__photo--right reveal reveal-d1">
             <Image
-              src="/images/azzura-villas-dsc-0192.webp"
-              alt="Sun terrace and outdoor lounge with Ionian Sea views at Azzura Villas"
+              src="/media/web/photography/activities-surroundings.webp"
+              alt="Outdoor activities and surroundings near Azzura Villas Lefkada"
               fill
               sizes="50vw"
               style={{ objectFit: 'cover' }}

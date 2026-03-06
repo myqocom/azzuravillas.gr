@@ -3,8 +3,8 @@ import BlurRevealText from '@/components/BlurRevealText'
 
 export function Experience() {
   return (
-    <section className="experience" id="experience">
-      <div className="experience__inner">
+    <section className="experience">
+      <div className="experience__inner" id="experience">
         <div className="experience__text">
           <p className="section-label reveal">The Experience</p>
           <BlurRevealText text="A Day Here" accentWord="Here" as="h3" className="experience__heading" />
@@ -23,7 +23,7 @@ export function Experience() {
         </div>
         <div className="experience__image reveal">
           <Image
-            src="/images/azzura-villas-dsc-0192.webp"
+            src="/media/web/photography/master-bedroom.webp"
             alt="Outdoor terrace and lounge area at Azzura Villas Lefkada"
             fill
             sizes="(max-width: 809px) 100vw, 50vw"

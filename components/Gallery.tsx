@@ -1,63 +1,70 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import Image from 'next/image'
 import BlurRevealText from '@/components/BlurRevealText'
 
 const slides = [
-  { src: '/images/azzura-villas-dsc-0009.webp', alt: 'Hot tub with panoramic Vasiliki Bay view at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0023.webp', alt: 'Luxury villa exterior at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0027.webp', alt: 'Villa architectural detail at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0039.webp', alt: 'Stylish living area at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0042.webp', alt: 'Interior design detail at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0053.webp', alt: 'Modern kitchen at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0055.webp', alt: 'Dining area at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0061.webp', alt: 'Bedroom with natural light at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0065.webp', alt: 'Bathroom interior at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0076.webp', alt: 'Villa terrace view at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0082.webp', alt: 'Outdoor seating area at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0091.webp', alt: 'Pool area at sunset at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0100.webp', alt: 'Designer bedroom interior at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0106.webp', alt: 'Private balcony with hot tub overlooking the Ionian Sea' },
-  { src: '/images/azzura-villas-dsc-0109.webp', alt: 'Villa lounge with sea view at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0118.webp', alt: 'Stone-finished interior at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0130.webp', alt: 'Panoramic bay view from Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0147.webp', alt: 'Evening atmosphere at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0163.webp', alt: 'Garden pathway at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0167.webp', alt: 'Outdoor dining setup at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0180.webp', alt: 'Sun terrace with loungers at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0184.webp', alt: 'Villa facade at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0192.webp', alt: 'Outdoor lounge terrace at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0199.webp', alt: 'Infinity pool with mountain backdrop at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0200.webp', alt: 'Poolside relaxation at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0201.webp', alt: 'Villa exterior at dusk at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0208.webp', alt: 'Living room with panoramic windows at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0214.webp', alt: 'Master bedroom at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0218.webp', alt: 'Bathroom with natural stone at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0220.webp', alt: 'Terrace with Ionian Sea views at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0225.webp', alt: 'Sunset view from Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-0230.webp', alt: 'Outdoor BBQ area at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0247.webp', alt: 'Aerial view of Azzura Villas and surroundings' },
-  { src: '/images/azzura-villas-dsc-0268.webp', alt: 'Vasiliki Bay panorama from Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0276.webp', alt: 'Villa garden and landscaping at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-0290.webp', alt: 'Coastal scenery near Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-9950.webp', alt: 'Mountain and sea view from Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-9953.webp', alt: 'Villa entrance at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-9956.webp', alt: 'Outdoor shower area at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-9959.webp', alt: 'Hillside setting of Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-9962.webp', alt: 'Infinity pool edge with Ionian Sea view at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-9980.webp', alt: 'Evening lights at Azzura Villas Lefkada' },
-  { src: '/images/azzura-villas-dsc-9988.webp', alt: 'Deck area with sea view at Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-9990.webp', alt: 'Coastal landscape near Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-9991.webp', alt: 'Sunrise over Vasiliki Bay from Azzura Villas' },
-  { src: '/images/azzura-villas-dsc-9999.webp', alt: 'Panoramic villa view at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/bathroom-stone.webp', alt: 'Bathroom with natural stone at Azzura Villas' },
+  { src: '/media/web/photography/hot-tub-bay-view.webp', alt: 'Hot tub with panoramic Vasiliki Bay view at Azzura Villas' },
+  { src: '/media/web/photography/villa-exterior.webp', alt: 'Luxury villa exterior at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/villa-architectural-detail.webp', alt: 'Villa architectural detail at Azzura Villas' },
+  { src: '/media/web/photography/living-area.webp', alt: 'Stylish living area at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/interior-detail.webp', alt: 'Interior design detail at Azzura Villas' },
+  { src: '/media/web/photography/kitchen.webp', alt: 'Modern kitchen at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/dining-area.webp', alt: 'Dining area at Azzura Villas' },
+  { src: '/media/web/photography/bedroom-natural-light.webp', alt: 'Bedroom with natural light at Azzura Villas' },
+  { src: '/media/web/photography/bathroom-interior.webp', alt: 'Bathroom interior at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/terrace-view.webp', alt: 'Villa terrace view at Azzura Villas' },
+  { src: '/media/web/photography/outdoor-seating.webp', alt: 'Outdoor seating area at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/pool-sunset.webp', alt: 'Pool area at sunset at Azzura Villas' },
+  { src: '/media/web/photography/bedroom-designer.webp', alt: 'Designer bedroom interior at Azzura Villas' },
+  { src: '/media/web/photography/balcony-hot-tub.webp', alt: 'Private balcony with hot tub overlooking the Ionian Sea' },
+  { src: '/media/web/photography/lounge-sea-view.webp', alt: 'Villa lounge with sea view at Azzura Villas' },
+  { src: '/media/web/photography/stone-interior.webp', alt: 'Stone-finished interior at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/panoramic-bay.webp', alt: 'Panoramic bay view from Azzura Villas' },
+  { src: '/media/web/photography/bedroom-sea-view.webp', alt: 'Evening atmosphere at Azzura Villas' },
+  { src: '/media/web/photography/garden-pathway.webp', alt: 'Garden pathway at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/outdoor-dining.webp', alt: 'Outdoor dining setup at Azzura Villas' },
+  { src: '/media/web/photography/sun-terrace-loungers.webp', alt: 'Sun terrace with loungers at Azzura Villas' },
+  { src: '/media/web/photography/villa-facade.webp', alt: 'Villa facade at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/outdoor-lounge-terrace.webp', alt: 'Outdoor lounge terrace at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/infinity-pool-mountains.webp', alt: 'Infinity pool with mountain backdrop at Azzura Villas' },
+  { src: '/media/web/photography/poolside-relaxation.webp', alt: 'Poolside relaxation at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/villa-interior-dining.webp', alt: 'Villa exterior at dusk at Azzura Villas' },
+  { src: '/media/web/photography/living-room-panoramic.webp', alt: 'Living room with panoramic windows at Azzura Villas' },
+  { src: '/media/web/photography/master-bedroom.webp', alt: 'Master bedroom at Azzura Villas Lefkada' },
+
+  { src: '/media/web/photography/terrace-ionian-views.webp', alt: 'Terrace with Ionian Sea views at Azzura Villas' },
+  { src: '/media/web/photography/sunset-view.webp', alt: 'Sunset view from Azzura Villas Lefkada' },
+  { src: '/media/web/photography/outdoor-bbq.webp', alt: 'Outdoor BBQ area at Azzura Villas' },
+  { src: '/media/web/photography/aerial-view.webp', alt: 'Aerial view of Azzura Villas and surroundings' },
+  { src: '/media/web/photography/vasiliki-bay-panorama.webp', alt: 'Vasiliki Bay panorama from Azzura Villas' },
+  { src: '/media/web/photography/garden-landscaping.webp', alt: 'Villa garden and landscaping at Azzura Villas' },
+  { src: '/media/web/photography/coastal-scenery.webp', alt: 'Coastal scenery near Azzura Villas Lefkada' },
+  { src: '/media/web/photography/mountain-sea-view.webp', alt: 'Mountain and sea view from Azzura Villas' },
+  { src: '/media/web/photography/villa-entrance.webp', alt: 'Villa entrance at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/outdoor-shower.webp', alt: 'Outdoor shower area at Azzura Villas' },
+  { src: '/media/web/photography/hillside-setting.webp', alt: 'Hillside setting of Azzura Villas Lefkada' },
+  { src: '/media/web/photography/infinity-pool-edge.webp', alt: 'Infinity pool edge with Ionian Sea view at Azzura Villas' },
+  { src: '/media/web/photography/evening-lights.webp', alt: 'Evening lights at Azzura Villas Lefkada' },
+  { src: '/media/web/photography/deck-sea-view.webp', alt: 'Deck area with sea view at Azzura Villas' },
+  { src: '/media/web/photography/coastal-landscape.webp', alt: 'Coastal landscape near Azzura Villas' },
+  { src: '/media/web/photography/sunrise-vasiliki-bay.webp', alt: 'Sunrise over Vasiliki Bay from Azzura Villas' },
+  { src: '/media/web/photography/panoramic-villa-view.webp', alt: 'Panoramic villa view at Azzura Villas Lefkada' },
 ]
 
-const START = 0
+// Extended slides: [clone of last, ...real slides, clone of first]
+// This lets us show the last image when scrolling left from the first,
+// and the first image when scrolling right past the last.
+const extSlides = [slides[slides.length - 1], ...slides, slides[0]]
+// The "real" first slide is at index 1 in extSlides
+const START = 13 // dsc-0091 - default visible slide on load
 
 export function Gallery() {
   const [current, setCurrent] = useState(START)
   const currentRef = useRef(START)
+  const isJumping = useRef(false)
 
   const trackRef = useRef<HTMLDivElement>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
@@ -74,10 +81,38 @@ export function Gallery() {
   }, [])
 
   const goTo = useCallback((index: number) => {
-    const clamped = Math.max(0, Math.min(slides.length - 1, index))
-    currentRef.current = clamped
-    setCurrent(clamped)
-    setTransform(clamped, 0, true)
+    currentRef.current = index
+    setCurrent(index)
+    setTransform(index, 0, true)
+  }, [setTransform])
+
+  // After the CSS transition ends on a clone slide, silently jump to the real one
+  useEffect(() => {
+    const el = trackRef.current
+    if (!el) return
+    const onEnd = (e: TransitionEvent) => {
+      if (e.target !== el) return // ignore bubbled events from child slides
+      const i = currentRef.current
+      if (i === 0) {
+        // Clone of last slide - jump to real last
+        isJumping.current = true
+        const real = extSlides.length - 2
+        currentRef.current = real
+        setCurrent(real)
+        setTransform(real, 0, false)
+        requestAnimationFrame(() => { isJumping.current = false })
+      } else if (i === extSlides.length - 1) {
+        // Clone of first slide - jump to real first
+        isJumping.current = true
+        const real = 1
+        currentRef.current = real
+        setCurrent(real)
+        setTransform(real, 0, false)
+        requestAnimationFrame(() => { isJumping.current = false })
+      }
+    }
+    el.addEventListener('transitionend', onEnd)
+    return () => el.removeEventListener('transitionend', onEnd)
   }, [setTransform])
 
   // Shared drag logic
@@ -105,7 +140,9 @@ export function Gallery() {
     if (wrapRef.current) wrapRef.current.style.cursor = 'grab'
     if (Math.abs(delta) > 60) {
       const next = delta > 0 ? currentRef.current + 1 : currentRef.current - 1
-      goTo(next)
+      // Allow going to clone indices (0 and extSlides.length-1) for wrap-around
+      const clamped = Math.max(0, Math.min(extSlides.length - 1, next))
+      goTo(clamped)
     } else {
       setTransform(currentRef.current, 0, true)
     }
@@ -164,21 +201,28 @@ export function Gallery() {
             transform: `translateX(calc(var(--gallery-offset) - ${START} * (var(--gallery-slide) + var(--gallery-gap))))`,
           }}
         >
-          {slides.map((slide, i) => {
+          {extSlides.map((slide, i) => {
             const cls = i === current
               ? 'gallery__slide gallery__slide--active'
-              : i === current - 1
-              ? 'gallery__slide gallery__slide--prev'
-              : i === current + 1
-              ? 'gallery__slide gallery__slide--next'
               : 'gallery__slide'
+            // Shift each non-active slide toward active to close the visual
+            // gap created by scale(0.82). The shrink per side = 0.09 * W,
+            // so accumulated compensation at distance d = (0.18d - 0.09) * W.
+            const d = Math.abs(i - current)
+            const dir = i > current ? -1 : i < current ? 1 : 0
+            const mult = d > 0 ? dir * (0.18 * d - 0.09) : 0
+            const slideStyle = mult !== 0
+              ? { '--slide-shift': `calc(${mult.toFixed(4)} * var(--gallery-slide))` } as React.CSSProperties
+              : undefined
             return (
               <div
                 key={i}
                 className={cls}
+                style={slideStyle}
                 onClick={() => {
                   if (!isDragging.current && i !== current) {
-                    goTo(i)
+                    const clamped = Math.max(0, Math.min(extSlides.length - 1, i))
+                    goTo(clamped)
                   }
                 }}
               >
@@ -188,7 +232,7 @@ export function Gallery() {
                   fill
                   sizes="(max-width: 809px) 95vw, 50vw"
                   draggable={false}
-                  priority={i < 3}
+                  priority={i <= 2}
                 />
               </div>
             )
