@@ -16,6 +16,7 @@ export function ContactContent() {
   const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>()
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  const [formLoadTime] = useState(() => Date.now())
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -33,6 +34,7 @@ export function ContactContent() {
       guests: data.get('guests') as string,
       message: data.get('message') as string,
       website: data.get('website') as string,
+      formLoadTime,
     }
 
     try {

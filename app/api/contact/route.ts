@@ -1,148 +1,156 @@
 import { NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
+import {
+  isRateLimited, sanitizeInput, sanitizeEmail, validateEmail,
+  decodeHtmlEntities, detectSpam, detectGibberish, MIN_SUBMISSION_TIME_MS,
+} from "@/lib/form-security"
+import { sendSlackNotification } from "@/lib/slack"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+// ── CHANGE PER SITE ───────────────────────────────────────────────────────────
 const SITE_NAME = "Azzura Villas"
 const SITE_URL = "https://azzuravillas.gr"
-const RECIPIENT_EMAIL = "lefkadabooking@gmail.com"
-const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL
+const NOTIFY_EMAIL = "lefkadabooking@gmail.com"
+const TIMEZONE = "Europe/Athens"
+// ─────────────────────────────────────────────────────────────────────────────
 
-// Simple in-memory rate limiting (per server instance)
-const rateLimit = new Map<string, { count: number; resetAt: number }>()
-const RATE_LIMIT_MAX = 5
-const RATE_LIMIT_WINDOW = 60 * 60 * 1000 // 1 hour
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now()
-  const entry = rateLimit.get(ip)
-  if (!entry || now > entry.resetAt) {
-    rateLimit.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW })
-    return false
-  }
-  entry.count++
-  return entry.count > RATE_LIMIT_MAX
-}
-
-function sanitize(input: string): string {
-  return input.replace(/[<>]/g, "").trim().slice(0, 2000)
-}
-
-function isValidEmail(email: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length < 320
-}
-
-async function sendSlack(text: string) {
-  if (!SLACK_WEBHOOK_URL) return
-  try {
-    await fetch(SLACK_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
-    })
-  } catch {
-    // Slack notification is best-effort
-  }
+function localDateTime() {
+  return new Date().toLocaleString("en-GB", {
+    timeZone: TIMEZONE, year: "numeric", month: "2-digit",
+    day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false,
+  })
 }
 
 export async function POST(request: NextRequest) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown"
-
-  if (isRateLimited(ip)) {
-    return NextResponse.json(
-      { error: "Too many requests. Please try again later." },
-      { status: 429 }
-    )
-  }
-
-  let body: Record<string, string>
   try {
-    body = await request.json()
-  } catch {
-    return NextResponse.json({ error: "Invalid request." }, { status: 400 })
-  }
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      request.headers.get("x-real-ip") ||
+      "unknown"
 
-  // Honeypot check
-  if (body.website) {
-    await sendSlack(
-      `🚫 *Spam blocked* on ${SITE_NAME}\nIP: ${ip}\nHoneypot field filled: "${body.website}"`
-    )
-    // Return success to not reveal detection
-    return NextResponse.json({ success: true })
-  }
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      )
+    }
 
-  const name = sanitize(body.name || "")
-  const email = sanitize(body.email || "")
-  const checkin = sanitize(body.checkin || "")
-  const checkout = sanitize(body.checkout || "")
-  const guests = sanitize(body.guests || "")
-  const message = sanitize(body.message || "")
+    let body: Record<string, string | number>
+    try {
+      body = await request.json()
+    } catch {
+      return NextResponse.json({ error: "Invalid request." }, { status: 400 })
+    }
 
-  if (!name || !email) {
-    return NextResponse.json(
-      { error: "Name and email are required." },
-      { status: 400 }
-    )
-  }
+    // Honeypot check
+    if (body.website) {
+      await sendSlackNotification({
+        formType: "Booking Enquiry",
+        name: String(body.name || "Bot"),
+        email: String(body.email || ""),
+        fields: {},
+        isSpam: true,
+        spamReason: `Honeypot filled: "${body.website}"`,
+        sourceUrl: SITE_URL,
+        submittedAt: localDateTime(),
+        ipAddress: ip,
+      })
+      return NextResponse.json({ success: true })
+    }
 
-  if (!isValidEmail(email)) {
-    return NextResponse.json(
-      { error: "Please enter a valid email address." },
-      { status: 400 }
-    )
-  }
+    // formLoadTime anti-bot check
+    if (body.formLoadTime && Date.now() - Number(body.formLoadTime) < MIN_SUBMISSION_TIME_MS) {
+      return NextResponse.json({ success: true })
+    }
 
-  const now = new Date()
-  const timestamp = now.toISOString().slice(0, 16).replace("T", " ")
+    const name = sanitizeInput(String(body.name || ""), 200)
+    const email = sanitizeEmail(sanitizeInput(String(body.email || ""), 255))
+    const checkin = sanitizeInput(String(body.checkin || ""), 50)
+    const checkout = sanitizeInput(String(body.checkout || ""), 50)
+    const guests = sanitizeInput(String(body.guests || ""), 10)
+    const message = sanitizeInput(String(body.message || ""), 2000)
 
-  const emailBody = [
-    `Hello ${SITE_NAME} team,`,
-    "",
-    "A new inquiry has been submitted via your website. Don't forget to reply:",
-    "",
-    "--- Booking Enquiry Details ---",
-    `Name: ${name}`,
-    `Email: ${email}`,
-    checkin ? `Check-in: ${checkin}` : null,
-    checkout ? `Check-out: ${checkout}` : null,
-    guests ? `Number of Guests: ${guests}` : null,
-    message ? `Message: ${message}` : null,
-    "",
-    SITE_URL,
-    timestamp,
-    `IP Address: ${ip}`,
-  ]
-    .filter(Boolean)
-    .join("\n")
+    if (!name || !email) {
+      return NextResponse.json(
+        { error: "Name and email are required." },
+        { status: 400 }
+      )
+    }
 
-  try {
-    await resend.emails.send({
-      from: "MYQO <mailer@myqo.com>",
-      to: RECIPIENT_EMAIL,
-      subject: `${SITE_NAME} | New Booking Enquiry from ${name}`,
-      text: emailBody,
-      headers: { "Reply-To": email },
+    if (!validateEmail(email)) {
+      return NextResponse.json(
+        { error: "Please enter a valid email address." },
+        { status: 400 }
+      )
+    }
+
+    // Spam detection
+    const spamCheck = detectSpam(`${name} ${message}`)
+    const nameGib = detectGibberish(name)
+    const msgGib = detectGibberish(message)
+    const userAgent = request.headers.get("user-agent") || ""
+    const isHeadless = /HeadlessChrome|PhantomJS|Puppeteer/i.test(userAgent)
+    const isSpam = spamCheck.isSpam || nameGib.isGibberish || msgGib.isGibberish || isHeadless
+    const spamReason = spamCheck.matchedKeyword
+      ?? (isHeadless ? `Headless: ${userAgent}` : nameGib.reason ?? msgGib.reason)
+
+    const ts = localDateTime()
+
+    // Build extra fields for Slack
+    const extraFields: Record<string, string> = {}
+    if (checkin) extraFields["Check-in"] = checkin
+    if (checkout) extraFields["Check-out"] = checkout
+    if (guests) extraFields["Guests"] = guests
+
+    // Always send to Slack (spam and legit)
+    await sendSlackNotification({
+      formType: "Booking Enquiry",
+      name: decodeHtmlEntities(name),
+      email,
+      fields: extraFields,
+      message: message || undefined,
+      isSpam,
+      spamReason: isSpam ? spamReason : undefined,
+      sourceUrl: SITE_URL,
+      submittedAt: ts,
+      ipAddress: ip,
     })
 
-    // Notify Slack of successful inquiry
-    const slackMsg = [
-      `📩 *New enquiry* on ${SITE_NAME}`,
-      `*Name:* ${name}`,
-      `*Email:* ${email}`,
-      checkin ? `*Check-in:* ${checkin}` : null,
-      checkout ? `*Check-out:* ${checkout}` : null,
-      guests ? `*Guests:* ${guests}` : null,
-      message ? `*Message:* ${message}` : null,
-    ]
-      .filter(Boolean)
-      .join("\n")
-    await sendSlack(slackMsg)
+    // Only send email for non-spam
+    if (!isSpam) {
+      const lines = [
+        `Hello ${SITE_NAME} team,`,
+        "",
+        "A new inquiry has been submitted via your website. Don't forget to reply:",
+        "",
+        "--- Booking Enquiry Details ---",
+        `Name: ${decodeHtmlEntities(name)}`,
+        `Email: ${email}`,
+        checkin ? `Check-in: ${checkin}` : "",
+        checkout ? `Check-out: ${checkout}` : "",
+        guests ? `Number of Guests: ${guests}` : "",
+        message ? `Message: ${decodeHtmlEntities(message)}` : "",
+        "",
+        SITE_URL,
+        ts,
+        `IP Address: ${ip}`,
+      ].filter(Boolean)
+
+      const { error } = await resend.emails.send({
+        from: "MYQO <mailer@myqo.com>",
+        to: NOTIFY_EMAIL,
+        subject: `${SITE_NAME} | New Booking Enquiry from ${decodeHtmlEntities(name)}`,
+        text: lines.join("\n"),
+        replyTo: email,
+      })
+
+      if (error) console.error("Resend error:", error)
+    }
 
     return NextResponse.json({ success: true })
-  } catch {
+  } catch (err) {
+    console.error("Contact route error:", err)
     return NextResponse.json(
       { error: "Something went wrong. Please try again or contact us directly." },
       { status: 500 }
